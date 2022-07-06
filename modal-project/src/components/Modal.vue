@@ -1,9 +1,11 @@
 <template>
-    <div class="modal-bg">
+    <div @click.self="$emit('close')" class="modal-bg">
         <div class="modal-body">
-            <button>Close</button>
-            <h3>modal title</h3>
-            <p>modal body Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora, neque.</p>
+            <button @click="$emit('close')">Close</button>
+            <slot></slot>
+            <div class="actions">
+                <slot name="links"> </slot>
+            </div>
         </div>
     </div>
 </template>
@@ -12,8 +14,12 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+    name: "Modal",
+    props:{
+        header:String
+    },
     setup () {
-        
+       
 
         return {}
     }
@@ -21,7 +27,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.modal-bg {
+.modal-bg, .modals {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,6 +44,11 @@ export default defineComponent({
         background: #fff;
         padding: 1em;
         border-radius: 1em;
+
+        h2{ color: green;}
+    }
+    .Links{
+        border: solid 1px red;
     }
 }
 
