@@ -2,13 +2,14 @@
 <section>
   <img alt="Vue logo" src="./assets/logo.png">
   <h1>Reaction timer</h1>
-  <Block />
+  <button :disabled="isPlaying" @click="start">Play</button>
+  <Block v-if="isPlaying" :delay="delay" />
   <Results/>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Block from './components/Block.vue';
 import Results from './components/Results.vue';
 
@@ -17,6 +18,19 @@ export default defineComponent({
   components: {
     Block,
     Results
+  },
+  setup () {
+    let isPlaying = ref<boolean>(false);
+    let delay = ref<number|null>(null);
+ const start = ()=>{
+        isPlaying.value = true;
+        delay.value = 2000 + Math.round(Math.random()*5000);
+        console.log("delay =", delay.value);
+      }
+    return {
+     start,
+     isPlaying, delay
+    }
   }
 });
 </script>

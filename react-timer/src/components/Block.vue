@@ -1,18 +1,32 @@
 
 <template>
-    <div class="block">
+    <div v-if="showBlock" class="block">
         <h3>Click me ...</h3>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-    setup () {
+    props:{
+        delay:Number,
+    },
+    mounted:function () {
+        console.log("component mounted");
+        setTimeout(function (){
+            this.showBlock = true;
+            console.log("delay", this.delay);
+        }, this.delay)
+    },
+    setup (props) {
+        const showBlock = ref<boolean>(false);
+
+
+        //lifecycle hooks
         
 
-        return {}
+        return {showBlock,}
     }
 })
 </script>
@@ -23,5 +37,8 @@ export default defineComponent({
         padding: 1em;
         background: blue;
         color: white;
+        width: 300px;
+        border-radius: 1em;
+        margin: 1em auto;
     }
 </style>
