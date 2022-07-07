@@ -2,34 +2,44 @@
 <section>
   <img alt="Vue logo" src="./assets/logo.png">
   <h1>Reaction timer</h1>
+ 
   <button :disabled="isPlaying" @click="start">Play</button>
-  <Block v-if="isPlaying" :delay="delay" />
-  <Results/>
+  <Block v-if="isPlaying" :delay="delay" @end="endGame" />
+  <ResultsComp v-if="showResults" :score="score"/>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref} from 'vue';
 import Block from './components/Block.vue';
-import Results from './components/Results.vue';
+import ResultsComp from './components/Results.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     Block,
-    Results
+    ResultsComp
   },
   setup () {
-    let isPlaying = ref<boolean>(false);
-    let delay = ref<number|null>(null);
+    const isPlaying = ref<boolean>(false);
+    const delay = ref<number|null>(null);
+    const score = ref<number>(-1)
+    const showResults = ref<boolean>(false);
+
+    const endGame = (reactionTime:number)=>{
+      score.value = reactionTime
+      isPlaying.value =false;
+      showResults.value = true;
+    }
+
  const start = ()=>{
         isPlaying.value = true;
         delay.value = 2000 + Math.round(Math.random()*5000);
-        console.log("delay =", delay.value);
+        showResults.value =false;
       }
     return {
-     start,
-     isPlaying, delay
+     start,endGame,
+     isPlaying, delay,score,showResults
     }
   }
 });
@@ -43,5 +53,9 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+button[disabled] {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 </style>
